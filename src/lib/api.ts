@@ -1,5 +1,6 @@
 import axios, { type AxiosInstance, type InternalAxiosRequestConfig } from 'axios';
 import { useAuthStore } from '../store/authStore';
+import { authApi } from '../api/auth';
 
 // API 기본 URL (환경 변수로 관리)
 // .env 파일에 VITE_API_BASE_URL을 설정하거나, 기본값 사용
@@ -81,7 +82,6 @@ apiClient.interceptors.response.use(
             try {
                 // Refresh Token으로 Access Token 재발급 시도
                 // httpOnly 쿠키에 refreshToken이 있으면 자동으로 전송됨
-                const { authApi } = await import('../api/auth');
                 const response = await authApi.refreshToken();
                 const userResponse = await authApi.getMe();
 
