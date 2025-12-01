@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { authApi } from '../api/auth';
 import type { LoginRequest } from '../types';
-import { Header } from '../components/Header';
 
 export function Login() {
     const [email, setEmail] = useState('');
@@ -55,10 +54,7 @@ export function Login() {
     }
 
     return (
-        <div className="min-h-screen bg-white">
-            <Header />
-
-            <div className="flex items-center justify-center py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-center py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-md w-full space-y-6 sm:space-y-8">
                     <div>
                         <h2 className="text-center text-2xl sm:text-3xl font-bold text-gray-900">

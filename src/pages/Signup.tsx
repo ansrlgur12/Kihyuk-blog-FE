@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { authApi } from '../api/auth';
 import type { SignupRequest } from '../types';
-import { Header } from '../components/Header';
 import { Modal } from '../components/Modal';
 import { useModal } from '../hooks/useModal';
 
@@ -90,9 +89,7 @@ export function Signup() {
     }
 
     return (
-        <div className="min-h-screen bg-white">
-            <Header />
-
+        <>
             <Modal
                 isOpen={isOpen}
                 onClose={closeModal}
@@ -193,7 +190,7 @@ export function Signup() {
                     </p>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 
