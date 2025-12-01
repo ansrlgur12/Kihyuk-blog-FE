@@ -11,7 +11,7 @@ export function Write() {
     const [content, setContent] = useState(``);
     const [tempFileMap, setTempFileMap] = useState<Map<string, File>>(new Map());
     // alt/파일명으로 File 객체를 찾기 위한 Map
-    const [fileByAltMap, setFileByAltMap] = useState<Map<string, File>>(new Map());
+    // const [fileByAltMap, setFileByAltMap] = useState<Map<string, File>>(new Map());
     const [isUploading, setIsUploading] = useState(false);
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -202,11 +202,11 @@ export function Write() {
             });
 
             // alt/파일명으로도 매핑 저장
-            setFileByAltMap((prev) => {
-                const newMap = new Map(prev);
-                newMap.set(file.name, file);
-                return newMap;
-            });
+            // setFileByAltMap((prev) => {
+            //     const newMap = new Map(prev);
+            //     newMap.set(file.name, file);
+            //     return newMap;
+            // });
 
             // 마크다운 이미지 문법 생성
             const imageMarkdown = `![${file.name}](${tempUrl})`;
