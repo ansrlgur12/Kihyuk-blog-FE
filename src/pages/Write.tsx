@@ -287,7 +287,6 @@ export function Write() {
                     matches.forEach((match, index) => {
                         const tempUrl = match[2];
                         if (uploadResult.files[index]) {
-                            
                             const serverUrl = `${API_BASE_URL}/${uploadResult.files[index].att_path}`;
                             tempUrlToServerUrl.set(tempUrl, serverUrl);
                         }
