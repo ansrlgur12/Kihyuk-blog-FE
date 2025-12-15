@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { uploadApi } from '../api/upload';
 import { userApi } from '../api/user';
@@ -7,13 +8,20 @@ import { API_BASE_URL } from '../lib/api';
 import type { Posts } from '../types';
 import { PostListItem } from '../components/PostListItem';
 
-type TabType = 'info' | 'posts' | 'drafts';
+type TabType = 'info' | 'posts' | 'temp';
 
 export function Mypage() {
     const { user, updateUser } = useAuthStore();
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    const [activeTab, setActiveTab] = useState<TabType>('info');
+    // URL에서 탭 정보 읽기 (기본값: 'info')
+    const getTabFromUrl = (): TabType => {
+        const tab = searchParams.get('tab') as TabType;
+        return tab && ['info', 'posts', 'temp'].includes(tab) ? tab : 'info';
+    };
+
+    const [activeTab, setActiveTab] = useState<TabType>(getTabFromUrl());
     const [nickname, setNickname] = useState(user?.user_nickname || '');
     const [profileImage, setProfileImage] = useState<string | null>(user?.user_image || null);
     const [isEditingNickname, setIsEditingNickname] = useState(false);
@@ -29,6 +37,18 @@ export function Mypage() {
             setProfileImage(user.user_image || null);
         }
     }, [user]);
+
+    // URL 쿼리 파라미터 변경 감지하여 탭 상태 동기화
+    useEffect(() => {
+        const tabFromUrl = getTabFromUrl();
+        setActiveTab(tabFromUrl);
+    }, [searchParams]);
+
+    // 탭 변경 핸들러 (URL 업데이트)
+    const handleTabChange = (tab: TabType) => {
+        setActiveTab(tab);
+        setSearchParams({ tab });
+    };
 
     // 내 글 목록 가져오기
     useEffect(() => {
@@ -312,7 +332,7 @@ export function Mypage() {
                         )}
                     </div>
                 );
-            case 'drafts':
+            case 'temp':
                 return (
                     <div className="bg-white rounded-lg p-4 sm:p-6">
                         <h2 className="text-2xl font-bold text-gray-900 mb-4">임시저장 글</h2>
@@ -346,7 +366,7 @@ export function Mypage() {
                     <div className="bg-white rounded-lg border border-gray-200 p-4">
                         <nav className="flex flex-col space-y-2">
                             <button
-                                onClick={() => setActiveTab('info')}
+                                onClick={() => handleTabChange('info')}
                                 className={`text-left px-4 py-2 rounded-lg transition ${activeTab === 'info'
                                         ? 'bg-gray-100 text-gray-900 font-medium'
                                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
@@ -355,7 +375,7 @@ export function Mypage() {
                                 정보수정
                             </button>
                             <button
-                                onClick={() => setActiveTab('posts')}
+                                onClick={() => handleTabChange('posts')}
                                 className={`text-left px-4 py-2 rounded-lg transition ${activeTab === 'posts'
                                         ? 'bg-gray-100 text-gray-900 font-medium'
                                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
@@ -364,8 +384,8 @@ export function Mypage() {
                                 내 글 목록
                             </button>
                             <button
-                                onClick={() => setActiveTab('drafts')}
-                                className={`text-left px-4 py-2 rounded-lg transition ${activeTab === 'drafts'
+                                onClick={() => handleTabChange('temp')}
+                                className={`text-left px-4 py-2 rounded-lg transition ${activeTab === 'temp'
                                         ? 'bg-gray-100 text-gray-900 font-medium'
                                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                                     }`}
