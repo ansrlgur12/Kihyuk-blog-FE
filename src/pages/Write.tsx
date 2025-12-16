@@ -464,7 +464,7 @@ export function Write() {
             {/* 메인 컨텐츠 영역 */}
             <div className="flex-1 flex overflow-hidden min-h-0">
                 {/* 좌측 에디터 영역 */}
-                <div className="w-1/2 border-r border-gray-200 flex flex-col overflow-hidden min-h-0 h-full">
+                <div className="w-full md:w-1/2 md:border-r border-gray-200 flex flex-col overflow-hidden min-h-0 h-full">
                     <div className="flex flex-col flex-1 overflow-hidden min-h-0 p-6">
                         {/* 제목 입력 */}
                         <input
@@ -573,7 +573,7 @@ export function Write() {
                 </div>
 
                 {/* 우측 미리보기 영역 */}
-                <div ref={previewRef} className="w-1/2 overflow-y-auto p-6 bg-gray-50 h-full">
+                <div ref={previewRef} className="hidden md:block w-1/2 overflow-y-auto p-6 bg-gray-50 h-full">
                     <div className="max-w-none text-left">
                         <h1 className="text-3xl font-bold mb-6 text-gray-900 text-left">{title}</h1>
                         <div className="markdown-preview text-left">
