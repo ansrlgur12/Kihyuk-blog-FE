@@ -180,11 +180,34 @@ export function WriteDetail() {
                                         {children}
                                     </pre>
                                 ),
-                                a: ({ href, children }) => (
-                                    <a href={href} className="text-teal-600 hover:text-teal-700 underline" target="_blank" rel="noopener noreferrer">
-                                        {children}
-                                    </a>
-                                ),
+                                a: ({ href, children }) => {
+                                    if (!href) return <a>{children}</a>;
+                                    
+                                    // 모든 링크를 외부 링크로 처리
+                                    // http:// 또는 https://로 시작하지 않으면 자동으로 https:// 추가
+                                    let finalHref = href;
+                                    if (!href.startsWith('http://') && !href.startsWith('https://') && !href.startsWith('mailto:') && !href.startsWith('#')) {
+                                        finalHref = `https://${href}`;
+                                    }
+                                    
+                                    return (
+                                        <a 
+                                            href={finalHref} 
+                                            className="text-teal-600 hover:text-teal-700 underline" 
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            onClick={(e) => {
+                                                // React Router가 링크를 가로채지 않도록 처리
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                // 새 탭에서 열기
+                                                window.open(finalHref, '_blank', 'noopener,noreferrer');
+                                            }}
+                                        >
+                                            {children}
+                                        </a>
+                                    );
+                                },
                                 img: ({ src, alt }) => (
                                     <div className="my-8 flex justify-center">
                                         <img src={src} alt={alt} className="max-w-full h-auto rounded-lg" />

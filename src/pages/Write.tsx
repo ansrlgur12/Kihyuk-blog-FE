@@ -186,14 +186,33 @@ export function Write() {
     const handleLink = () => {
         const url = prompt('링크 URL을 입력하세요:');
         if (url) {
-            const text = textareaRef.current?.selectionStart !== textareaRef.current?.selectionEnd
-                ? content.substring(textareaRef.current!.selectionStart, textareaRef.current!.selectionEnd)
-                : '링크 텍스트';
-            insertText(`[${text}](`, ')');
+            const textarea = textareaRef.current;
+            if (!textarea) return;
+
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = content.substring(start, end);
+            const linkText = selectedText || '링크 텍스트';
+            
+            // 링크 마크다운 삽입: [텍스트](URL)
+            const before = `[${linkText}](`;
+            const after = `${url})`;
+            const newText = content.substring(0, start) + before + after + content.substring(end);
+
+            setContent(newText);
+
+            // 커서 위치 조정
             setTimeout(() => {
-                if (textareaRef.current) {
-                    const pos = textareaRef.current.selectionStart - 1;
-                    textareaRef.current.setSelectionRange(pos, pos);
+                textarea.focus();
+                if (selectedText) {
+                    // 텍스트가 선택되어 있었으면 링크 뒤로 커서 이동
+                    const newCursorPos = start + before.length + after.length;
+                    textarea.setSelectionRange(newCursorPos, newCursorPos);
+                } else {
+                    // 텍스트가 선택되지 않았으면 "링크 텍스트" 부분을 선택하여 수정 가능하게
+                    const textStart = start + 1; // '[' 다음
+                    const textEnd = textStart + linkText.length;
+                    textarea.setSelectionRange(textStart, textEnd);
                 }
             }, 0);
         }
@@ -590,11 +609,34 @@ export function Write() {
                                             {children}
                                         </blockquote>
                                     ),
-                                    a: ({ href, children }) => (
-                                        <a href={href} className="text-blue-600 hover:underline text-left" target="_blank" rel="noopener noreferrer">
-                                            {children}
-                                        </a>
-                                    ),
+                                    a: ({ href, children }) => {
+                                        if (!href) return <a>{children}</a>;
+                                        
+                                        // 모든 링크를 외부 링크로 처리
+                                        // http:// 또는 https://로 시작하지 않으면 자동으로 https:// 추가
+                                        let finalHref = href;
+                                        if (!href.startsWith('http://') && !href.startsWith('https://') && !href.startsWith('mailto:') && !href.startsWith('#')) {
+                                            finalHref = `https://${href}`;
+                                        }
+                                        
+                                        return (
+                                            <a 
+                                                href={finalHref} 
+                                                className="text-blue-600 hover:underline text-left" 
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                onClick={(e) => {
+                                                    // React Router가 링크를 가로채지 않도록 처리
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    // 새 탭에서 열기
+                                                    window.open(finalHref, '_blank', 'noopener,noreferrer');
+                                                }}
+                                            >
+                                                {children}
+                                            </a>
+                                        );
+                                    },
                                     code: (props: any) => {
                                         const { children, className } = props;
                                         const isInline = !className;
