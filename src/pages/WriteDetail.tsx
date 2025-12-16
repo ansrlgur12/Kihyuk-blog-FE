@@ -12,8 +12,6 @@ export function WriteDetail() {
     const navigate = useNavigate();
     const { user } = useAuthStore();
     const [post, setPost] = useState<Posts>();
-    const [likes, setLikes] = useState(105);
-    const [isLiked, setIsLiked] = useState(false);
 
     useEffect(() => {
         getPost();
@@ -40,7 +38,7 @@ export function WriteDetail() {
         const day = date.getDate();
         return `${year}년 ${month}월 ${day}일`;
     }
-    
+
     // 본인 글인지 확인
     const isMyPost = user && post && (post.author?.user_id === user.user_id);
 
