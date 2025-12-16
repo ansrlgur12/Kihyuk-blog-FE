@@ -77,6 +77,7 @@ export interface TempSavePost {
 
 export interface getPostsRequest {
     page: number;
+    pageSize?: number;
     user_id?: number;
     sort?: string;
 }

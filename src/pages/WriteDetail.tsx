@@ -221,44 +221,7 @@ export function WriteDetail() {
                 </div>
             </div>
 
-            {/* 모바일용 좋아요/공유 버튼 */}
-            <div className="lg:hidden flex items-center justify-center gap-6 mt-8 pt-8 border-t border-gray-200">
-                <button
-                    onClick={handleLike}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-100 transition"
-                >
-                    <svg
-                        className={`w-5 h-5 ${isLiked ? 'text-red-500 fill-current' : 'text-gray-600'}`}
-                        fill={isLiked ? 'currentColor' : 'none'}
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                        />
-                    </svg>
-                    <span className="text-sm font-medium text-gray-700">{likes}</span>
-                </button>
-                <button className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-100 transition">
-                    <svg
-                        className="w-5 h-5 text-gray-600"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
-                        />
-                    </svg>
-                    <span className="text-sm font-medium text-gray-700">공유</span>
-                </button>
-            </div>
+         
         </div>
     );
 }

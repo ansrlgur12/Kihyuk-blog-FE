@@ -9,31 +9,33 @@ export const PostCard = ({ post }: { post: Posts }) => {
 
     return (
         <div
-            className="cursor-pointer bg-white shadow-sm overflow-hidden w-[calc((100%-3*1rem)/4)] sm:w-[calc((100%-3*1.5rem)/4)]"
+            className="cursor-pointer bg-white shadow-sm overflow-hidden w-full md:w-[calc((100%-1*1.5rem)/2)] lg:w-[calc((100%-3*1.5rem)/4)] flex flex-col min-h-[400px] md:min-h-0"
             onClick={() => {
                 navigate(`/detail/${post.post_id}`);
             }}
         >
             {post.post_thumbnail && post.post_thumbnail !== 'noimage' ? (
                 <img
-                    className="w-full h-48 object-cover"
+                    className="w-full h-48 object-cover flex-shrink-0"
                     src={post.post_thumbnail}
                     alt={post.post_title}
                 />
             ) : (
-                <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
+                <div className="w-full h-48 bg-gray-200 flex items-center justify-center flex-shrink-0">
                     <span className="text-gray-400">No Image</span>
                 </div>
             )}
 
-            <div className="p-4">
+            <div className="p-4 flex flex-col flex-1">
                 <h2 className="text-base font-bold mb-2 line-clamp-2 text-left">{post.post_title}</h2>
 
                 {/* 컨텐츠 미리보기 */}
-                {post.post_content && (
-                    <p className="text-sm text-gray-500 mb-3 line-clamp-3 text-left h-16">
+                {post.post_content ? (
+                    <p className="text-sm text-gray-500 mb-3 line-clamp-3 text-left min-h-[4rem]">
                         {post.post_content.replace(/[#*`]/g, '').replace(/!\[.*?\]\(.*?\)/g, '').substring(0, 100)}...
                     </p>
+                ) : (
+                    <p className="text-sm text-gray-500 mb-3 line-clamp-3 text-left min-h-[4rem]"></p>
                 )}
 
                 {/* 날짜와 댓글 수 */}
